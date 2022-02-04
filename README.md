@@ -2,7 +2,7 @@
 
 <PITCH>
 
-	LIL LIL ANGUS T== WAS IS ON A MISSION TO SAVE HIS FAMILY AND MUST DEFEAT HIS ENEMIES ALONG THE WAY.
+Lil Angus is on a mission to rescue his family
 
 <TECH STACK>
 HTML5
@@ -13,11 +13,11 @@ JAVASCRIPT
 <WIREFRAMES>
 
 START SCREEN
-(https://i.imgur.com/WukibNK.jpg)
+[Imgur](https://i.imgur.com/WukibNK.jpg)
 FIGHT STAGE
-(https://i.imgur.com/uSMXOSR.png)
+[Imgur](https://i.imgur.com/3efKdLY.png)
 STRETCH GOAL
-(https://i.imgur.com/3efKdLY.png)
+[Imgur](https://i.imgur.com/uSMXOSR.png)
 
 <MVP>
 - Title Screen to start game
