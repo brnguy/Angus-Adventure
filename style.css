@@ -1,0 +1,35 @@
+body {
+    background-color: black;
+    margin: 0 auto;
+}
+
+h1 {
+    border: solid 2px black;
+    max-width: 30vw;
+    padding: 1em;
+    margin: 0;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+button {
+    background-color: burlywood;
+    font-size: 15px;
+    width: 100px;
+    height: 40px;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.container {
+    max-width: 50em;
+    height: 45em;;
+    background-color: skyblue;
+    margin: 30px auto;
+    padding: 1em;
+    text-align: center;
+}
