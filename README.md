@@ -38,11 +38,11 @@ JAVASCRIPT<br>
 - Enemy randomizes between attacking/defending. 
 - Lose when the player health goes to or below 0
 - Win when enemy health goes to or below 0. 
-- Player moves on to next enemy which is stronger. 
-- Game ends when boss is defeated
 
 ### STRETCH GOALS
 ---
+- Player moves on to next enemy which is stronger. 
+- Game ends when boss is defeated
 - Storyline (Multiple Fight Stages). 
 - Attach attributes to player and track experience gain after each stage. 
 - Customizable character. 
