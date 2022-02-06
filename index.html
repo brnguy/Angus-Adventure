@@ -13,14 +13,34 @@
             <h1>Angus' Adventure</h1>
         </header>
 
-        <button>START</button>
+        <button id="start">START</button>
     </div>
 
     <div class="container" id="fightStage">
-        <aside id="playerHealth">Player Health</aside>
-        <aside id="enemyHealth">Enemy Health</aside>
-        <main>Main</main>
-        <aside id="textBox">Attacks</aside>
+        <aside id="player">
+            <div class="healthTracker">
+                <span class="healthBar" id="pHealthBar">100/100</span>
+                <progress id="playerHealth" value="100" min="0" max="100">
+                </progress>
+            </div>
+        </aside>
+        <aside id="enemy">
+            <div class="healthTracker">
+                <span class="healthBar" id="eHealthBar">100/100</span>
+                <progress id="enemyHealth" value="100" min="0" max="100"></progress>
+            </div>
+        </aside>
+        <main>
+            <!-- for animation component -->
+            <canvas id="canvas"></canvas>
+        </main>
+        <aside id="textBox">
+            <div id="moveBox">
+                <button class="moves" id="attack">Attack</button>
+                <button class="moves" id="defend">Defend</button>
+                <button class="moves" id="heal">Heal</button>
+            </div>
+        </aside>
     </div>
     
     <script src='js/main.js'></script>
