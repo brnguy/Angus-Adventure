@@ -101,6 +101,11 @@ progress:before {
     right:0;
 }
 
+#results {
+    font-size: 50px;
+    font-weight: bold;
+}
+
 #player {
     grid-area: player; 
 }

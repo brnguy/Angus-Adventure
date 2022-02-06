@@ -1,7 +1,7 @@
 /* DOM SELECTORS -- EVENT LISTENERS */
 const canvas = document.querySelector('#canvas')
-const resultBox = document.createElement('div')
-resultBox.id = "results"
+const loseButton = document.createElement('button')
+loseButton.id = "tryAgain"
 /* GAME STATE/CANVAS RENDERING STUFF */
 let ctx = canvas.getContext('2d')
 
@@ -35,6 +35,15 @@ enemy.render()
 
 
 /* FUNCTIONS */
+function returnTo() {
+    results.style.display = "none"
+    moveBox.style.display = "block"
+}
+
+function switchTo() {
+    moveBox.style.display = "none"
+    results.style.display = "block"
+}
 
 function enemyMove() {
     enemyPlay = Math.floor(Math.random()*2)
@@ -48,12 +57,18 @@ function playerAttack() {
         player.health -= enemy.attack
         playerHealth.value = player.health
         pHealthBar.innerText = player.health, '/100'
+        switchTo()
+        results.innerText = "Player Attacks. Enemy Attacks"
         result()
+        setTimeout(returnTo, 2000)
     } else {
         enemy.health -= (player.attack - enemy.defense)
         enemyHealth.value = enemy.health
         eHealthBar.innerText = enemy.health, '/100'
+        switchTo()
+        results.innerText = "Player Attacks. Enemy Defends"
         result()
+        setTimeout(returnTo, 2000)
     }
     console.log(enemyPlay)
     console.log(player.attack)
@@ -68,6 +83,14 @@ function playerDefend() {
         player.health -= (enemy.attack - player.defense)
         playerHealth.value = player.health
         pHealthBar.innerText = player.health, '/100'
+        switchTo()
+        results.innerText = "Player Defends. Enemy Attacks"
+        result()
+        setTimeout(returnTo, 2000)
+    } else {
+        switchTo()
+        results.innerText = "Player Defends. Enemy Defends"
+        setTimeout(returnTo, 2000)
     }
 }
 
@@ -77,15 +100,25 @@ function playerHeal() {
         player.health -= (enemy.attack - player.heal)
         playerHealth.value = player.health
         pHealthBar.innerText = player.health, '/100'
+        switchTo()
+        results.innerText = "Player Heals " + player.heal + " HP. Enemy Attacks"
+        result()
+        setTimeout(returnTo, 2000)
     } else {
         if ((player.health + player.heal) > 100) {
             player.health = 100
             playerHealth.value = player.health
             pHealthBar.innerText = player.health, '/100'
+            switchTo()
+            results.innerText = "Player Is Fully Healed. Enemy Defends"
+            setTimeout(returnTo, 2000)
         } else {
             player.health += player.heal
             playerHealth.value = player.health
             pHealthBar.innerText = player.health, '/100'
+            switchTo()
+            results.innerText = "Player Heals " + player.heal + " HP. Enemy Defends"
+            setTimeout(returnTo, 2000)
         }
     }
 }
@@ -93,11 +126,9 @@ function playerHeal() {
 function result() {
     if (player.health <= 0) {
         moveBox.style.display = "none"
-        textBox.appendChild(resultBox)
         results.innerText = "Player Died. Try again?"
     } else if (enemy.health <= 0) {
         moveBox.style.display = "none"
-        textBox.appendChild(resultBox)
         results.innerText = "Player Wins!"
     }
 }
