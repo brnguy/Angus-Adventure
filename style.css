@@ -96,9 +96,15 @@ progress:before {
     content: attr(data-label);
     font-size: 0.8em;
     vertical-align: 0;
-    position:absolute;
+    position: absolute;
     left:0;
     right:0;
+}
+
+#playAgain {
+    position: relative;
+    margin: 50px;
+    bottom: 10px;
 }
 
 #results {
