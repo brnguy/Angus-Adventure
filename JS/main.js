@@ -26,13 +26,10 @@ class Character {
     }
 }
 
-let player = new Character(100, 100, 0, 4, 40, 90, 40, 50, "green")
+let player = new Character(100, 100, 5, 4, 40, 90, 40, 50, "green")
 
-let enemy = new Character(100, 100, 0, 0, 220, 90, 40, 50, "red")
+let enemy = new Character(100, 5, 2, 0, 220, 90, 40, 50, "red")
 
-player.render()
-enemy.render()
-stageText()
 
 
 /* FUNCTIONS */
@@ -56,7 +53,22 @@ function switchTo() {
 }
 
 function enemyMove() {
-    enemyPlay = Math.floor(Math.random()*2)
+    if (easy.checked) {
+        enemyPlay = Math.floor(Math.random()*2)
+    } else {
+        if (player.attack > enemy.defense && enemy.health/enemyHealth.max < 0.2) {
+            enemyPlay = Math.floor(Math.random()*2)
+        } else if (player.attack <= enemy.defense && enemy.health/enemyHealth.max < 0.2) {
+            if (Math.floor(Math.random()*2) === 0) {
+                return enemyPlay = 1
+            } else {
+                return enemyPlay = 2
+            }
+        } else {
+            enemyPlay = Math.floor(Math.random()*3)
+        }
+    }
+    console.log(enemyPlay)
 }
 
 function restart() {
@@ -68,8 +80,8 @@ function restart() {
 }
 
 function playerAttack() {
-    enemyMove()
-    if (enemyPlay === 1) {
+        enemyMove()
+    if (enemyPlay === 0) {
         enemy.health -= player.attack
         eBarSync()
         player.health -= enemy.attack
@@ -77,11 +89,17 @@ function playerAttack() {
         switchTo()
         results.innerText = "Player Attacks. Enemy Attacks"
         result()
-    } else {
+    } else if (enemyPlay === 1) {
         enemy.health -= (player.attack - enemy.defense)
         eBarSync()
         switchTo()
         results.innerText = "Player Attacks. Enemy Defends"
+        result()
+    } else {
+        enemy.health -= (player.attack - enemy.heal)
+        eBarSync
+        switchTo()
+        results.innerText = "Player Attacks. Enemy Heals"
         result()
     }
 }
@@ -94,10 +112,15 @@ function playerDefend() {
         switchTo()
         results.innerText = "Player Defends. Enemy Attacks"
         result()
-    } else {
+    } else if (enemyPlay === 0) {
         switchTo()
         results.innerText = "Player Defends. Enemy Defends"
         setTimeout(returnTo, 2000)
+    } else {
+        enemy.health += enemy.heal
+        eBarSync
+        switchTo()
+        results.innerText = "Player Defends. Enemy Heals"
     }
 }
 
@@ -109,7 +132,7 @@ function playerHeal() {
         switchTo()
         results.innerText = "Player Heals " + player.heal + " HP. Enemy Attacks"
         result()
-    } else {
+    } else if (enemyPlay === 0) {
         if ((player.health + player.heal) > 100) {
             player.health = 100
             pBarSync()
@@ -123,6 +146,14 @@ function playerHeal() {
             results.innerText = "Player Heals " + player.heal + " HP. Enemy Defends"
             setTimeout(returnTo, 2000)
         }
+    } else {
+        player.health += player.heal
+        enemy.health += enemy.heal
+        pBarSync()
+        eBarSync()
+        switchTo()
+        results.innerText = "Player Heals. Enemy Heals"
+        setTimeout(returnTo, 2000)
     }
 }
 
@@ -135,11 +166,25 @@ function result() {
         endButton.addEventListener('click', restart)
     } else if (enemy.health <= 0) {
         moveBox.style.display = "none"
-        results.innerText = "Player Wins!"
-        results.appendChild(endButton)
-        endButton.innerText = "Next Stage"
-        if (enemyHealth.max < 0)
-        endButton.addEventListener('click', nextStage)
+        if (easy.checked) {
+            if (enemyHealth.max > 200) {
+                results.innerText = "Congratulations! Angus defeated all the baddies!"
+            } else {
+                results.innerText = "Player Wins!"
+                results.appendChild(endButton)
+                endButton.innerText = "Next Stage"
+                endButton.addEventListener('click', nextStage)
+            }
+        } else {
+            if (enemyHealth.max > 500) {
+            results.innerText = "Congratulations! Angus defeated all the baddies!"
+            } else {
+            results.innerText = "Player Wins!"
+            results.appendChild(endButton)
+            endButton.innerText = "Next Stage"
+            endButton.addEventListener('click', nextStageHard)
+            }
+        }
     } else {
         setTimeout(returnTo, 2000)
     }
@@ -163,19 +208,72 @@ function stageText() {
     }
 }
 
+function stageTextHard() {
+    if (enemyHealth.max < 140) {
+        ctx.fillText("STAGE 1", 128, 30)
+    } else if (enemyHealth.max > 150 && enemyHealth.max < 250) {
+        ctx.clearRect(0, 0, 1000, 30)
+        ctx.fillText("STAGE 2", 128, 30)
+    } else if (enemyHealth.max > 250 && enemyHealth.max < 350) {
+        ctx.clearRect(0, 0, 1000, 30)
+        ctx.fillText("STAGE 3", 128, 30)
+    } else if (enemyHealth.max > 350 && enemyHealth.max < 450) {
+        ctx.clearRect(0, 0, 1000, 30)
+        ctx.fillText("STAGE 4", 128, 30)
+    } else {
+        ctx.clearRect(0, 0, 1000, 30)
+        ctx.fillText("BOSS STAGE", 128, 30)
+    }
+}
+
+
 function nextStage() {
     enemyHealth.max = Math.floor(enemyHealth.max * 1.2)
     enemy.health = enemyHealth.max
     eTotalHealth.innerText = '/' + enemyHealth.max
-    enemy.attack = Math.floor(enemy.attack * 1.5)
-    enemy.defense = Math.floor(enemy.defense * 1.5)
+    enemy.attack = Math.floor(enemy.attack * 1.2)
+    enemy.defense = Math.floor(enemy.defense * 1.2)
+    enemy.heal = Math.floor(enemy.heal * 1.2)
     enemy.y -= 10
-    enemy.width = 40
     enemy.height += 10
     enemy.render()
     stageText()
     eBarSync()
     returnTo()
+}
+
+function nextStageHard() {
+    enemyHealth.max = Math.floor(enemyHealth.max * 1.5)
+    enemy.health = enemyHealth.max
+    eTotalHealth.innerText = '/' + enemyHealth.max
+    enemy.attack = Math.floor(enemy.attack * 1.5)
+    enemy.defense = Math.floor(enemy.defense * 1.5)
+    enemy.heal = Math.floor(enemy.heal * 1.5)
+    enemy.y -= 10
+    enemy.height += 10
+    enemy.render()
+    stageTextHard()
+    eBarSync()
+    returnTo()
+}
+
+function difficultyMode() {
+    if(easy.checked) {
+        player.render()
+        enemy.render()
+        stageText()
+        attack.addEventListener('click', playerAttack)
+        defend.addEventListener('click', playerDefend)
+        heal.addEventListener('click', playerHeal)
+    } else {
+        player.render()
+        enemy.render()
+        stageText()
+        eTotalHealth.innerText = '/' + enemyHealth.max
+        attack.addEventListener('click', playerAttack)
+        defend.addEventListener('click', playerDefend)
+        heal.addEventListener('click', playerHeal)
+    }
 }
 
 // Start Button -- EXTRA (FADE OUT)
@@ -185,7 +283,6 @@ document.querySelector('button').addEventListener('click', () => {
 })
 
 // Fight Sequence
-attack.addEventListener('click', playerAttack)
-defend.addEventListener('click', playerDefend)
-heal.addEventListener('click', playerHeal)
+difficultyMode()
+
 

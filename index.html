@@ -8,15 +8,20 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="container" id="startScreen">
+    <div class="gameScreen" id="startScreen">
         <header id="title">
             <h1>Angus' Adventure</h1>
         </header>
 
         <button id="start">START</button>
+        <container id="difficultyBox">
+            <p>Difficulty</p>
+            <input type="radio" id="easy" name="difficulty" checked>Easy<br>
+            <input type="radio" id="hard" name="difficulty">Hard<br>
+        </container>
     </div>
 
-    <div class="container" id="fightStage">
+    <div class="gameScreen" id="fightStage">
         <aside id="player">
             <div class="healthTracker">
                 <span class="healthBar" id="pHealthBar">100</span><span id="pTotalHealth">/100</span>
