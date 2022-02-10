@@ -8,27 +8,17 @@ let ctx = canvas.getContext('2d')
 /* OBJECT FACTORY */
 
 class Character {
-    constructor (health, attack, defense, heal, x, y, width, height, color) {
+    constructor (health, attack, defense, heal) {
         this.health = health,
         this.attack = attack,
         this.defense = defense,
-        this.heal = heal,
-        this.x = x,
-        this.y = y,
-        this.width = width,
-        this.height = height,
-        this.color = color
-    }
-
-    render() {
-        ctx.fillStyle = this.color
-        ctx.fillRect(this.x, this.y, this.width, this.height)
+        this.heal = heal
     }
 }
 
-let player = new Character(100, 100, 5, 4, 40, 90, 40, 50, "green")
+let player = new Character(100, 100, 5, 4)
 
-let enemy = new Character(100, 5, 2, 0, 220, 90, 40, 50, "red")
+let enemy = new Character(100, 5, 2, 0)
 
 
 
@@ -50,6 +40,22 @@ function returnTo() {
 function switchTo() {
     moveBox.style.display = "none"
     results.style.display = "block"
+}
+
+function playerRender() {
+    playerImage = new Image()
+    playerImage.src = 'https://i.imgur.com/UlU20eK.png'
+    playerImage.onload = function() {
+        ctx.drawImage(playerImage, 20, 40, 100, 100)
+    }
+}
+
+function enemyRender() {
+    enemyImage = new Image()
+    enemyImage.src = 'IMG/bunny.png'
+    enemyImage.onload = function() {
+        ctx.drawImage(enemyImage, 180, 75, 100, 100)
+    }
 }
 
 function enemyMove() {
@@ -234,9 +240,6 @@ function nextStage() {
     enemy.attack = Math.floor(enemy.attack * 1.2)
     enemy.defense = Math.floor(enemy.defense * 1.2)
     enemy.heal = Math.floor(enemy.heal * 1.2)
-    enemy.y -= 10
-    enemy.height += 10
-    enemy.render()
     stageText()
     eBarSync()
     returnTo()
@@ -249,9 +252,6 @@ function nextStageHard() {
     enemy.attack = Math.floor(enemy.attack * 1.5)
     enemy.defense = Math.floor(enemy.defense * 1.5)
     enemy.heal = Math.floor(enemy.heal * 1.5)
-    enemy.y -= 10
-    enemy.height += 10
-    enemy.render()
     stageTextHard()
     eBarSync()
     returnTo()
@@ -259,15 +259,15 @@ function nextStageHard() {
 
 function difficultyMode() {
     if(easy.checked) {
-        player.render()
-        enemy.render()
+        playerRender()
+        enemyRender()
         stageText()
         attack.addEventListener('click', playerAttack)
         defend.addEventListener('click', playerDefend)
         heal.addEventListener('click', playerHeal)
     } else {
-        player.render()
-        enemy.render()
+        playerRender()
+        enemyRender()
         stageText()
         eTotalHealth.innerText = '/' + enemyHealth.max
         attack.addEventListener('click', playerAttack)

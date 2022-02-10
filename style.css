@@ -40,6 +40,10 @@ input {
 canvas {
     width: 100%;
     height: 100%;
+    background-image: url('https://i.imgur.com/obpI6DO.jpg');
+    background-repeat: no-repeat;
+    background-attachment: 100% 100%;
+    background-size: cover;
 }
 
 #start {
