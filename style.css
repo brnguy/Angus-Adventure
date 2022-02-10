@@ -86,7 +86,7 @@ canvas {
     border: 0.2em solid black;
     padding: 1em;
     position: absolute;
-    top: 80%;
+    top: 75%;
     transform: translate(-50%, -50%)
 }
 
