@@ -17,7 +17,7 @@ class Character {
 }
 
 let player = new Character(100, 15, 5, 4)
-let enemy = new Character(100, 20, 3, 3)
+let enemy = new Character(100, 5, 3, 3)
 
 
 /* FUNCTIONS */
