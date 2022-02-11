@@ -16,11 +16,13 @@ class Character {
     }
 }
 
-let player = new Character(100, 1000, 5, 4)
-let enemy = new Character(100, 5, 2, 3)
+let player = new Character(100, 15, 5, 4)
+let enemy = new Character(100, 20, 3, 3)
 
 
 /* FUNCTIONS */
+
+// Making sure health numbers above the health bar match what's shown on the health bar
 function pBarSync() {
     playerHealth.value = player.health
     pHealthBar.innerText = playerHealth.value
@@ -30,11 +32,14 @@ function eBarSync() {
     enemyHealth.value = enemy.health
     eHealthBar.innerText = enemyHealth.value
 }
+
+// function that switches outcome back to move choices. When player chooses to restart
 function returnTo() {
     results.style.display = "none"
     moveBox.style.display = "block"
 }
 
+// function that switches the display from move choices to outcome
 function switchTo() {
     moveBox.style.display = "none"
     results.style.display = "block"
@@ -56,6 +61,7 @@ function enemyRender(image, x, y, width, height) {
     }
 }
 
+// If easy, enemy randomly chooses move. If hard, some logic towards moves
 function enemyMove() {
     if (easy.checked) {
         enemyPlay = Math.floor(Math.random()*2)
@@ -72,17 +78,18 @@ function enemyMove() {
             enemyPlay = Math.floor(Math.random()*3)
         }
     }
-    console.log(enemyPlay)
 }
 
+// When player health reaches 0 and clicks restart stage
 function restart() {
-    player.health = 100
+    player.health = playerHealth.max
     pBarSync()
-    enemy.health = 100
+    enemy.health = enemyHealth.max
     eBarSync()
     returnTo()
 }
 
+// When the player chooses to attack, defend or heal, the different possible outcomes
 function playerAttack() {
         enemyMove()
     if (enemyPlay === 0) {
@@ -125,6 +132,7 @@ function playerDefend() {
         eBarSync
         switchTo()
         results.innerText = "Player Defends. Enemy Heals"
+        setTimeout(returnTo, 2000)
     }
 }
 
@@ -134,7 +142,7 @@ function playerHeal() {
         player.health -= (enemy.attack - player.heal)
         pBarSync()
         switchTo()
-        results.innerText = "Player Heals " + player.heal + " HP. Enemy Attacks"
+        results.innerText = "Player Heals. Enemy Attacks"
         result()
     } else if (enemyPlay === 0) {
         if ((player.health + player.heal) > 100) {
@@ -161,12 +169,13 @@ function playerHeal() {
     }
 }
 
+// Outcome for when enemy or player health reaches zero
 function result() {
     if (player.health <= 0) {
         moveBox.style.display = "none"
         results.innerText = "Player Died. Try again?"
         results.appendChild(endButton)
-        endButton.innerText = "Restart"
+        endButton.innerText = "Restart Stage?"
         endButton.addEventListener('click', restart)
     } else if (enemy.health <= 0) {
         moveBox.style.display = "none"
@@ -194,6 +203,7 @@ function result() {
     }
 }
 
+// Function to show stage number and render new enemies for each stage
 function stageText() {
     if (easy.checked) {
         if (enemyHealth.max < 110) {
@@ -238,6 +248,7 @@ function stageText() {
     }
 }
 
+// Function to increase enemy stats for the next stage and to reset the text box and update the enemy health bar
 function nextStage() {
     if (easy.checked) {
         enemyHealth.max = Math.floor(enemyHealth.max * 1.2)
@@ -259,7 +270,8 @@ function nextStage() {
     returnTo()
 }
 
-function difficultyMode() {
+// The game
+function play() {
     if(easy.checked) {
         playerRender()
         enemyRender("./IMG/bunny.png", 180, 75, 100, 100)
@@ -278,13 +290,11 @@ function difficultyMode() {
     }
 }
 
-// Start Button -- EXTRA (FADE OUT)
+// Start Button
 document.querySelector('button').addEventListener('click', () => {
     startScreen.style.display = "none"
     fightStage.style.display = "grid"
 })
 
-// Fight Sequence
-difficultyMode()
-
-
+// The game
+play()
