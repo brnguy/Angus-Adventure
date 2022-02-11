@@ -16,10 +16,8 @@ class Character {
     }
 }
 
-let player = new Character(100, 100, 5, 4)
-
-let enemy = new Character(100, 5, 2, 0)
-
+let player = new Character(100, 1000, 5, 4)
+let enemy = new Character(100, 5, 2, 3)
 
 
 /* FUNCTIONS */
@@ -50,11 +48,11 @@ function playerRender() {
     }
 }
 
-function enemyRender() {
+function enemyRender(image, x, y, width, height) {
     enemyImage = new Image()
-    enemyImage.src = 'IMG/bunny.png'
+    enemyImage.src = image
     enemyImage.onload = function() {
-        ctx.drawImage(enemyImage, 180, 75, 100, 100)
+        ctx.drawImage(enemyImage, x, y, width, height)
     }
 }
 
@@ -188,7 +186,7 @@ function result() {
             results.innerText = "Player Wins!"
             results.appendChild(endButton)
             endButton.innerText = "Next Stage"
-            endButton.addEventListener('click', nextStageHard)
+            endButton.addEventListener('click', nextStage)
             }
         }
     } else {
@@ -197,62 +195,66 @@ function result() {
 }
 
 function stageText() {
-    if (enemyHealth.max < 110) {
-        ctx.fillText("STAGE 1", 128, 30)
-    } else if (enemyHealth.max > 110 && enemyHealth.max < 140) {
-        ctx.clearRect(0, 0, 1000, 30)
-        ctx.fillText("STAGE 2", 128, 30)
-    } else if (enemyHealth.max > 140 && enemyHealth.max < 170) {
-        ctx.clearRect(0, 0, 1000, 30)
-        ctx.fillText("STAGE 3", 128, 30)
-    } else if (enemyHealth.max > 170 && enemyHealth.max < 200) {
-        ctx.clearRect(0, 0, 1000, 30)
-        ctx.fillText("STAGE 4", 128, 30)
+    if (easy.checked) {
+        if (enemyHealth.max < 110) {
+            ctx.fillText("STAGE 1", 128, 30)
+        } else if (enemyHealth.max > 110 && enemyHealth.max < 140) {
+            ctx.clearRect(120, 0, 500, 500)
+            ctx.fillText("STAGE 2", 128, 30)
+            enemyRender("./IMG/duck.png", 200, 90, 50, 50)
+        } else if (enemyHealth.max > 140 && enemyHealth.max < 170) {
+            ctx.clearRect(120, 0, 500, 500)
+            ctx.fillText("STAGE 3", 128, 30)
+            enemyRender("./IMG/cat.png", 200, 90, 50, 50)
+        } else if (enemyHealth.max > 170 && enemyHealth.max < 200) {
+            ctx.clearRect(120, 0, 500, 500)
+            ctx.fillText("STAGE 4", 128, 30)
+            enemyRender("./IMG/mole.png", 190, 65, 60, 75)
+        } else {
+            ctx.clearRect(120, 0, 500, 500)
+            ctx.fillText("BOSS STAGE", 128, 30)
+            enemyRender("./IMG/dragon.png", 180, 65, 90, 75)
+        }
     } else {
-        ctx.clearRect(0, 0, 1000, 30)
-        ctx.fillText("BOSS STAGE", 128, 30)
+        if (enemyHealth.max < 140) {
+            ctx.fillText("STAGE 1", 128, 30)
+        } else if (enemyHealth.max >= 150 && enemyHealth.max < 2225) {
+            ctx.clearRect(120, 0, 500, 500)
+            ctx.fillText("STAGE 2", 128, 30)
+            enemyRender("./IMG/duck.png", 200, 90, 50, 50)
+        } else if (enemyHealth.max >= 225 && enemyHealth.max < 350) {
+            ctx.clearRect(120, 0, 500, 500)
+            ctx.fillText("STAGE 3", 128, 30)
+            enemyRender("./IMG/cat.png", 200, 90, 50, 50)
+        } else if (enemyHealth.max > 350 && enemyHealth.max < 450) {
+            ctx.clearRect(120, 0, 500, 500)
+            ctx.fillText("STAGE 4", 128, 30)
+            enemyRender("./IMG/mole.png", 190, 65, 60, 75)
+        } else {
+            ctx.clearRect(120, 0, 500, 500)
+            ctx.fillText("BOSS STAGE", 128, 30)
+            enemyRender("./IMG/dragon.png", 180, 65, 90, 75)
+        }
     }
 }
-
-function stageTextHard() {
-    if (enemyHealth.max < 140) {
-        ctx.fillText("STAGE 1", 128, 30)
-    } else if (enemyHealth.max > 150 && enemyHealth.max < 250) {
-        ctx.clearRect(0, 0, 1000, 30)
-        ctx.fillText("STAGE 2", 128, 30)
-    } else if (enemyHealth.max > 250 && enemyHealth.max < 350) {
-        ctx.clearRect(0, 0, 1000, 30)
-        ctx.fillText("STAGE 3", 128, 30)
-    } else if (enemyHealth.max > 350 && enemyHealth.max < 450) {
-        ctx.clearRect(0, 0, 1000, 30)
-        ctx.fillText("STAGE 4", 128, 30)
-    } else {
-        ctx.clearRect(0, 0, 1000, 30)
-        ctx.fillText("BOSS STAGE", 128, 30)
-    }
-}
-
 
 function nextStage() {
-    enemyHealth.max = Math.floor(enemyHealth.max * 1.2)
-    enemy.health = enemyHealth.max
-    eTotalHealth.innerText = '/' + enemyHealth.max
-    enemy.attack = Math.floor(enemy.attack * 1.2)
-    enemy.defense = Math.floor(enemy.defense * 1.2)
-    enemy.heal = Math.floor(enemy.heal * 1.2)
+    if (easy.checked) {
+        enemyHealth.max = Math.floor(enemyHealth.max * 1.2)
+        enemy.health = enemyHealth.max
+        eTotalHealth.innerText = '/' + enemyHealth.max
+        enemy.attack = Math.floor(enemy.attack * 1.2)
+        enemy.defense = Math.floor(enemy.defense * 1.2)
+        enemy.heal = Math.floor(enemy.heal * 1.2)
+    } else {
+        enemyHealth.max = Math.floor(enemyHealth.max * 1.5)
+        enemy.health = enemyHealth.max
+        eTotalHealth.innerText = '/' + enemyHealth.max
+        enemy.attack = Math.floor(enemy.attack * 1.5)
+        enemy.defense = Math.floor(enemy.defense * 1.5)
+        enemy.heal = Math.floor(enemy.heal * 1.5)
+    }
     stageText()
-    eBarSync()
-    returnTo()
-}
-
-function nextStageHard() {
-    enemyHealth.max = Math.floor(enemyHealth.max * 1.5)
-    enemy.health = enemyHealth.max
-    eTotalHealth.innerText = '/' + enemyHealth.max
-    enemy.attack = Math.floor(enemy.attack * 1.5)
-    enemy.defense = Math.floor(enemy.defense * 1.5)
-    enemy.heal = Math.floor(enemy.heal * 1.5)
-    stageTextHard()
     eBarSync()
     returnTo()
 }
@@ -260,14 +262,14 @@ function nextStageHard() {
 function difficultyMode() {
     if(easy.checked) {
         playerRender()
-        enemyRender()
+        enemyRender("./IMG/bunny.png", 180, 75, 100, 100)
         stageText()
         attack.addEventListener('click', playerAttack)
         defend.addEventListener('click', playerDefend)
         heal.addEventListener('click', playerHeal)
     } else {
         playerRender()
-        enemyRender()
+        enemyRender("./IMG/bunny.png")
         stageText()
         eTotalHealth.innerText = '/' + enemyHealth.max
         attack.addEventListener('click', playerAttack)
