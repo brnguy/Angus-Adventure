@@ -16,7 +16,7 @@ class Character {
     }
 }
 
-let player = new Character(100, 500, 5, 4)
+let player = new Character(100, 15, 5, 4)
 let enemy = new Character(100, 5, 3, 3)
 
 
@@ -89,7 +89,7 @@ function restart() {
     returnTo()
 }
 
-// Full Reset
+// Full Reset at End of Game
 function fullreset() {
     playerHealth.max = 100
     enemyHealth.max = 100
