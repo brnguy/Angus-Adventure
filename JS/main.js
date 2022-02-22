@@ -16,7 +16,7 @@ class Character {
     }
 }
 
-let player = new Character(100, 15, 5, 4)
+let player = new Character(100, 500, 5, 4)
 let enemy = new Character(100, 5, 3, 3)
 
 
@@ -87,6 +87,20 @@ function restart() {
     enemy.health = enemyHealth.max
     eBarSync()
     returnTo()
+}
+
+// Full Reset
+function fullreset() {
+    playerHealth.max = 100
+    enemyHealth.max = 100
+    eTotalHealth.innerText = '/' + enemyHealth.max
+    player.health = playerHealth.max
+    pBarSync()
+    enemy.health = enemyHealth.max
+    eBarSync()
+    startScreen.style.display = "grid"
+    fightStage.style.display = "none"
+    endButton.removeEventListener('click', fullreset)
 }
 
 // When the player chooses to attack, defend or heal, the different possible outcomes
@@ -182,6 +196,9 @@ function result() {
         if (easy.checked) {
             if (enemyHealth.max > 200) {
                 results.innerText = "Congratulations! Angus defeated all the baddies!"
+                results.appendChild(endButton)
+                endButton.innerText = "Restart"
+                endButton.addEventListener('click', fullreset)
             } else {
                 results.innerText = "Player Wins!"
                 results.appendChild(endButton)
@@ -191,6 +208,9 @@ function result() {
         } else {
             if (enemyHealth.max > 500) {
             results.innerText = "Congratulations! Angus defeated all the baddies!"
+            results.appendChild(endButton)
+            endButton.innerText = "Restart"
+            endButton.addEventListener('click', fullreset)
             } else {
             results.innerText = "Player Wins!"
             results.appendChild(endButton)
@@ -207,7 +227,9 @@ function result() {
 function stageText() {
     if (easy.checked) {
         if (enemyHealth.max < 110) {
+            ctx.clearRect(120, 0, 500, 500)
             ctx.fillText("STAGE 1", 128, 30)
+            enemyRender("./IMG/bunny.png", 180, 75, 100, 100)
         } else if (enemyHealth.max > 110 && enemyHealth.max < 140) {
             ctx.clearRect(120, 0, 500, 500)
             ctx.fillText("STAGE 2", 128, 30)
@@ -227,7 +249,9 @@ function stageText() {
         }
     } else {
         if (enemyHealth.max < 140) {
+            ctx.clearRect(120, 0, 500, 500)
             ctx.fillText("STAGE 1", 128, 30)
+            enemyRender("./IMG/bunny.png", 180, 75, 100, 100)
         } else if (enemyHealth.max >= 150 && enemyHealth.max < 2225) {
             ctx.clearRect(120, 0, 500, 500)
             ctx.fillText("STAGE 2", 128, 30)
@@ -265,8 +289,8 @@ function nextStage() {
         enemy.defense = Math.floor(enemy.defense * 1.5)
         enemy.heal = Math.floor(enemy.heal * 1.5)
     }
-    stageText()
     eBarSync()
+    stageText()
     returnTo()
 }
 
@@ -281,7 +305,7 @@ function play() {
         heal.addEventListener('click', playerHeal)
     } else {
         playerRender()
-        enemyRender("./IMG/bunny.png")
+        enemyRender("./IMG/bunny.png", 180, 75, 100, 100)
         stageText()
         eTotalHealth.innerText = '/' + enemyHealth.max
         attack.addEventListener('click', playerAttack)
@@ -294,7 +318,7 @@ function play() {
 document.querySelector('button').addEventListener('click', () => {
     startScreen.style.display = "none"
     fightStage.style.display = "grid"
+    play()
 })
 
 // The game
-play()

@@ -11,7 +11,7 @@ body {
 #title {
     margin: 0;
     position: absolute;
-    top: 35%;
+    top: 28%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -62,6 +62,16 @@ canvas {
     text-align: center;
     grid-gap: 1em;
     border: 1em solid black;
+}
+
+#instructions {
+    position: absolute;
+    padding: 1em;
+    border: 1em solid black;
+    font-size: 5px;
+    width: 300px;
+    bottom: 24vh;
+    left: 23vw;
 }
 
 .healthTracker {
